@@ -15,6 +15,8 @@ class CommitSchema extends Schema {
         .inTable("projects")
         .onUpdate("CASCADE")
         .onDelete("CASCADE");
+      table.string("task", 200);
+      table.integer("task_id");
       table.integer("minuts");
       table.string("time_start", 40);
       table.string("time_end", 40);

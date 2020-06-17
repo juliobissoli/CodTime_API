@@ -55,7 +55,18 @@ class ProjectController {
    * @param {Response} ctx.response
    * @param {View} ctx.view
    */
-  async show({ params, request, response, view }) {}
+  async show({ params, request, response, view }) {
+    try {
+      const project = await Project.find(params.id);
+
+      await project.load("commits");
+      await project.load("tasks");
+
+      return project;
+    } catch (error) {
+      return error;
+    }
+  }
 
   /**
    * Render a form to update an existing project.

@@ -7,6 +7,9 @@ class Commit extends Model {
   project() {
     return this.belongsTo("App/Models/Projetcs");
   }
+  // task() {
+  //   return this.hasOne("App/Models/Task");
+  // }
 }
 
 module.exports = Commit;

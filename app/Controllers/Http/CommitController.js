@@ -18,18 +18,10 @@ class CommitController {
    * @param {Response} ctx.response
    * @param {View} ctx.view
    */
-  async index({ request, response, view }) {}
-
-  /**
-   * Render a form to be used for creating a new commit.
-   * GET commits/create
-   *
-   * @param {object} ctx
-   * @param {Request} ctx.request
-   * @param {Response} ctx.response
-   * @param {View} ctx.view
-   */
-  async create({ request, response, view }) {}
+  async index({ request, response, view }) {
+    let commits = await Commit.all();
+    return commits;
+  }
 
   /**
    * Create/save a new commit.
@@ -46,6 +38,8 @@ class CommitController {
       "minuts",
       "time_start",
       "time_end",
+      "task",
+      "task_id",
     ]);
 
     const commit = await Commit.create(data);
@@ -63,17 +57,6 @@ class CommitController {
    * @param {View} ctx.view
    */
   async show({ params, request, response, view }) {}
-
-  /**
-   * Render a form to update an existing commit.
-   * GET commits/:id/edit
-   *
-   * @param {object} ctx
-   * @param {Request} ctx.request
-   * @param {Response} ctx.response
-   * @param {View} ctx.view
-   */
-  async edit({ params, request, response, view }) {}
 
   /**
    * Update commit details.
