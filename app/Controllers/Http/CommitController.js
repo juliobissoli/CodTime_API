@@ -46,7 +46,6 @@ class CommitController {
     try {
       const project = await Projets.findOrFail(data.project_id);
 
-      console.log("ta aqui", data.minuts);
       let new_minuts =
         parseInt(project.totla_minuts, 10) + parseInt(data.minuts, 10);
       console.log(new_minuts);

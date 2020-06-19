@@ -33,6 +33,7 @@ class TaskController {
    */
   async store({ request, response }) {
     const data = request.only(["project_id", "name"]);
+    console.log(data);
     const task = await Task.create(data);
 
     return task;
