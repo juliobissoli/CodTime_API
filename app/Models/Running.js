@@ -7,6 +7,10 @@ class Running extends Model {
   user() {
     return this.belongsTo("App/Models/User");
   }
+
+  project() {
+    return this.hasOne("App/Models/Project");
+  }
 }
 
 module.exports = Running;

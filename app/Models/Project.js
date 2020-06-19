@@ -8,6 +8,10 @@ class Project extends Model {
     return this.belongsTo("App/Models/User");
   }
 
+  running() {
+    return this.belongsTo("App/Models/Running");
+  }
+
   commits() {
     return this.hasMany("App/Models/Commit");
   }

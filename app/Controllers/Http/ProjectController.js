@@ -56,16 +56,16 @@ class ProjectController {
    * @param {View} ctx.view
    */
   async show({ params, request, response, view }) {
-    try {
-      const project = await Project.find(params.id);
+    const user_id = params.id;
+    const project = await Project.query()
+      .where("user_id", user_id)
+      .with("commits")
+      .with("tasks")
+      .fetch();
 
-      await project.load("commits");
-      await project.load("tasks");
-
-      return project;
-    } catch (error) {
-      return error;
-    }
+    // await project.load("commits");
+    // await project.load("tasks");
+    return project;
   }
 
   /**

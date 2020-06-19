@@ -9,7 +9,7 @@ Route.get("/users/:id", "UserController.show");
 Route.get("/users", "UserController.index");
 
 //Session routers
-Route.post("/sessions", "SessionController.create");
+Route.post("/login", "SessionController.create");
 
 //Projects routers
 Route.resource("projects", "ProjectController").apiOnly().middleware("auth");

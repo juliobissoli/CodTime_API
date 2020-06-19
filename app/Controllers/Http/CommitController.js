@@ -1,6 +1,7 @@
 "use strict";
 
 const Commit = use("App/Models/Commit");
+const Projets = use("App/Models/Project");
 /** @typedef {import('@adonisjs/framework/src/Request')} Request */
 /** @typedef {import('@adonisjs/framework/src/Response')} Response */
 /** @typedef {import('@adonisjs/framework/src/View')} View */
@@ -42,9 +43,22 @@ class CommitController {
       "task_id",
     ]);
 
-    const commit = await Commit.create(data);
+    try {
+      const project = await Projets.findOrFail(data.project_id);
 
-    return commit;
+      console.log("ta aqui", data.minuts);
+      let new_minuts =
+        parseInt(project.totla_minuts, 10) + parseInt(data.minuts, 10);
+      console.log(new_minuts);
+      const commit = await Commit.create(data);
+
+      project.merge({ totla_minuts: new_minuts });
+      project.save({ totla_minuts: new_minuts });
+
+      return commit;
+    } catch (error) {
+      return error;
+    }
   }
 
   /**

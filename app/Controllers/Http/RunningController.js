@@ -31,7 +31,8 @@ class RunningController {
    */
   async show({ params, request, response, view }) {
     try {
-      const run = await Running.findOrFail(params.id);
+      const run = await Running.findByOrFail("user_id", params.id);
+      // await run.load("project");
       return run;
     } catch (error) {
       return error;
@@ -85,15 +86,15 @@ class RunningController {
 
       if (!run.is_running) {
         run.merge({
-          date_start: "certo",
-          minuts: 10,
-          project_id: 1,
+          date_start: data.date_start,
+          minuts: data.minuts,
+          project_id: data.project_id,
           is_running: true,
         });
         await run.save({
-          date_start: "certo",
-          minuts: 10,
-          project_id: 1,
+          date_start: data.date_start,
+          minuts: data.minuts,
+          project_id: data.project_id,
           is_running: true,
         });
         return run;
