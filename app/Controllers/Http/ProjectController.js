@@ -1,5 +1,6 @@
 "use strict";
 const Project = use("App/Models/Project");
+const Task = use("App/Models/Task");
 
 /** @typedef {import('@adonisjs/framework/src/Request')} Request */
 /** @typedef {import('@adonisjs/framework/src/Response')} Response */
@@ -39,6 +40,11 @@ class ProjectController {
         ...data,
         status: "progres",
         totla_minuts: 0,
+      });
+      await Task.create({
+        project_id: project.id,
+        name: "Commit sem tarefa",
+        minuts: 0,
       });
       return project;
     } catch (error) {

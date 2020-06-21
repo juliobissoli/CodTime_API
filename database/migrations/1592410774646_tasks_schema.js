@@ -8,6 +8,7 @@ class TasksSchema extends Schema {
     this.create("tasks", (table) => {
       table.increments();
       table.string("name", 200);
+      table.integer("minuts");
       table
         .integer("project_id")
         .unsigned()
