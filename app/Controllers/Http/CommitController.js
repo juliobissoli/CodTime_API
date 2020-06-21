@@ -2,6 +2,7 @@
 
 const Commit = use("App/Models/Commit");
 const Projets = use("App/Models/Project");
+const Tasks = use("App/Models/Task");
 /** @typedef {import('@adonisjs/framework/src/Request')} Request */
 /** @typedef {import('@adonisjs/framework/src/Response')} Response */
 /** @typedef {import('@adonisjs/framework/src/View')} View */
@@ -44,15 +45,30 @@ class CommitController {
     ]);
 
     try {
-      const project = await Projets.findOrFail(data.project_id);
-
-      let new_minuts =
-        parseInt(project.totla_minuts, 10) + parseInt(data.minuts, 10);
-      console.log(new_minuts);
       const commit = await Commit.create(data);
 
-      project.merge({ totla_minuts: new_minuts });
-      project.save({ totla_minuts: new_minuts });
+      //Update  in mitus in Project
+      if (data.project_id) {
+        const project = await Projets.findOrFail(data.project_id);
+
+        let new_minuts = project.totla_minuts
+          ? parseInt(project.totla_minuts, 10) + parseInt(data.minuts, 10)
+          : parseInt(data.minuts, 10);
+
+        project.merge({ totla_minuts: new_minuts });
+        project.save({ totla_minuts: new_minuts });
+      }
+
+      if (data.task_id) {
+        const task = await Tasks.findOrFail(data.task_id);
+
+        let new_minuts_task = task.minuts
+          ? parseInt(task.minuts, 10) + parseInt(data.minuts, 10)
+          : parseInt(data.minuts, 10);
+
+        task.merge({ minuts: new_minuts_task });
+        task.save({ minuts: new_minuts_task });
+      }
 
       return commit;
     } catch (error) {
@@ -89,7 +105,17 @@ class CommitController {
    * @param {Request} ctx.request
    * @param {Response} ctx.response
    */
-  async destroy({ params, request, response }) {}
+  async destroy({ params, request, response }) {
+    try {
+      const commit = await Commit.findOrFail(params.id);
+
+      await commit.delete();
+
+      return "commit deletado com sucesso";
+    } catch (error) {
+      return error;
+    }
+  }
 }
 
 module.exports = CommitController;
