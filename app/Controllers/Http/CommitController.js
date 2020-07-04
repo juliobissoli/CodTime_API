@@ -3,6 +3,8 @@
 const Commit = use("App/Models/Commit");
 const Projets = use("App/Models/Project");
 const Tasks = use("App/Models/Task");
+
+const Database = use("Database");
 /** @typedef {import('@adonisjs/framework/src/Request')} Request */
 /** @typedef {import('@adonisjs/framework/src/Response')} Response */
 /** @typedef {import('@adonisjs/framework/src/View')} View */
@@ -85,7 +87,20 @@ class CommitController {
    * @param {Response} ctx.response
    * @param {View} ctx.view
    */
-  async show({ params, request, response, view }) {}
+  async show({ params, request, response, view }) {
+    const project_id = params.id;
+    const data = request.only(["currentPage", "perPage"]);
+    const commits = Database.from("commits")
+      .where("project_id", project_id)
+      .orderBy("created_at", "desc")
+      .paginate(data.currentPage, data.perPage);
+
+    return commits;
+    // .with("attendances", (el) => {
+    //   el.whereBetween('created_at', [fristDate, lestDate])
+    //     .orderBy("created_at", "desc")
+    // })
+  }
 
   /**
    * Update commit details.
