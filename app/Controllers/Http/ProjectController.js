@@ -1,6 +1,8 @@
 "use strict";
 const Project = use("App/Models/Project");
 const Task = use("App/Models/Task");
+const Commit = use("App/Models/Commit");
+const Database = use("Database");
 
 /** @typedef {import('@adonisjs/framework/src/Request')} Request */
 /** @typedef {import('@adonisjs/framework/src/Response')} Response */
@@ -20,7 +22,16 @@ class ProjectController {
    * @param {View} ctx.view
    */
   async index({ request, response, view }) {
-    const projects = await Project.all();
+    const data = request.only(["user_id", "fristDate", "lestDate"]);
+
+    const projects = await Project.query()
+      .where("user_id", data.user_id)
+      .with("commits", (el) => {
+        el.lastCommits(data.fristDate, data.lestDate);
+      })
+      .with("tasks")
+      .fetch();
+
     return projects;
   }
 
@@ -63,15 +74,17 @@ class ProjectController {
    */
   async show({ params, request, response, view }) {
     const user_id = params.id;
-    const project = await Project.query()
+    const data = request.only(["fristDate", "lestDate"]);
+    // console.log(data);
+    const projects = await Project.query()
       .where("user_id", user_id)
-      .with("commits")
+      .with("commits", (el) => {
+        el.lastCommits(data.fristDate, data.lestDate);
+      })
       .with("tasks")
       .fetch();
 
-    // await project.load("commits");
-    // await project.load("tasks");
-    return project;
+    return projects;
   }
 
   /**
