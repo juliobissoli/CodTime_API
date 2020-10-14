@@ -7,8 +7,10 @@ const Route = use("Route");
 Route.post("/users", "UserController.create");
 Route.get("/users/:id", "UserController.show");
 Route.get("/users", "UserController.index");
+Route.post('users/:id/images', 'ThumbnailController.store')
 
-//Session routers
+Route.get('images/:path', 'ThumbnailController.show')
+
 Route.post("/login", "SessionController.create");
 
 //Projects routers
