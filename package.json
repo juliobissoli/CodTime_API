@@ -27,7 +27,7 @@
     "https": "^1.0.0",
     "mysql": "^2.18.1",
     "pem": "^1.14.4",
-    "pg": "^8.2.1"
+    "pg": "^8.4.0"
   },
   "devDependencies": {},
   "autoload": {
